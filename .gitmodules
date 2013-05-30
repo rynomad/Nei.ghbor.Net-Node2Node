@@ -1,3 +1,9 @@
 [submodule "Nei.ghbor.Net-Ground"]
 	path = Nei.ghbor.Net-Ground
 	url = https://github.com/dcunited001/Nei.ghbor.Net-Ground
+[submodule "Nei.ghbor.Net-Lightning"]
+	path = Nei.ghbor.Net-Lightning
+	url = https://github.com/rynomad/Nei.ghbor.Net-Lightning
+[submodule "Nei.ghbor.Net-Keystone"]
+	path = Nei.ghbor.Net-Keystone
+	url = https://github.com/rynomad/Nei.ghbor.Net-Keystone
