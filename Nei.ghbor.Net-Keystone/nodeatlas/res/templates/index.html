@@ -1,0 +1,237 @@
+<html>
+  <head>
+    <title>{{.Name}}</title>
+    <link rel="shortcut icon" href="/res/img/favicon.png">
+    <!-- CDN w/o local fallbacks will need to be addressed -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootswatch/2.3.1/flatly/bootstrap.min.css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
+    <link type="text/css" rel="stylesheet" href="res/css/leaflet.css" />
+    <link type="text/css" rel="stylesheet" href="res/css/custom.css" />
+    <!--[if lte IE 8]><link type="text/css" rel="stylesheet" href="res/css/leaflet.ie.css" /><![endif]-->
+    <link type="text/css" rel="stylesheet" href="res/css/MarkerCluster.css" />
+    <link type="text/css" rel="stylesheet" href="res/css/MarkerCluster.Default.css" />
+    </head>
+
+  <body>
+  <div class="container-narrow">
+
+      <div class="masthead">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <a href="/" class="brand">nodeatlas</a>
+            <ul class="nav">
+              <li><a href="#about" data-toggle="modal"><i class="icon-sitemap icon-muted icon-2x"></i><br><small>about</small></span></a></li>
+              <li><a href="#"><i class="icon-dashboard icon-muted icon-2x"></i><br><small>tools</small></span></a></li>
+	      
+      </ul>
+          
+        <ul class="navbar-search pull-right">
+	  <li><a class="btn btn-primary" data-toggle="modal" href="#me"><i class="icon-fixed-width icon-user"></i> Add Me</a></li>
+        </ul>
+        </div>
+        
+      </div>
+  <div class="modal hide fade" id="about">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+        <h3>About the MeshMap</h3>
+      </div>
+      <div class="modal-body">
+        <p>How do you make sense of a meshnet? You map it.</p>
+        <p>This is an early release of the NodeAtlas meshnet map, proudly built with bootstrap, go and leaflet.</p>
+      </div>
+      <div class="modal-footer">
+        <a href="https://github.com/ProjectMeshnet/nodeatlas"class="btn btn-primary">View Github</a>
+      </div>
+    </div>
+  <div class="modal hide fade" id="me">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+        <h3>Add me to the map!</h3>
+      </div>
+      <div class="modal-body">
+        <p>Click on the Go! button below to get started.</p>
+        <p>Navigate to your desired location and click on the map to drop a marker and submit your information.</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#" onclick="$('#me').modal('hide'); initRegistration(); return false;"class="btn btn-primary">Go!</a>
+      </div>
+    </div>
+
+    <div class="modal hide fade" id="insertSuccessModal">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+        <h3>Success!</h3>
+      </div>
+      <div class="modal-body">
+        <p>Thanks for joining MeshMap!</p>
+        <p>You should receive an email shortly with instructions on how to edit your information.</p>
+      </div>
+    </div>
+      <div class="row-fluid marketing">
+        <div class="well">
+	<div id="map"></div>
+	  <div id="loading-mask" class="modal-backdrop" style="display:none;"></div>
+	    <div id="loading" style="display:none;">
+       	    <div class="loading-indicator">
+            <img src="res/img/ajax-loader.gif">
+        </div>
+    </div>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="footer">
+        <p>powered by <a href="https://github.com/ProjectMeshnet/nodeatlas">nodeatlas {{.Version}}</a></p>
+      </div>
+
+    </div> 
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="res/js/leaflet.js"></script>
+    <script type="text/javascript" src="res/js/leaflet.markercluster.js"></script>
+
+    <script type="text/javascript"> 
+      var map, newUser, cloudmade, cloudmadeAttribution, cloudmadeUrl, users, firstLoad;
+
+      firstLoad = true;
+
+      cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011  CloudMade'; 
+      cloudmadeUrl = 'http://{s}.tile.cloudmade.com/64022233ce4f40c6acb6473ccdaec5b3/{styleId}/256/{z}/{x}/{y}.png',
+      users = new L.FeatureGroup();
+      users = new L.MarkerClusterGroup({spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: true});
+      newUser = new L.LayerGroup();
+
+      cloudmade = L.tileLayer(cloudmadeUrl, {styleId: 22677, attribution: cloudmadeAttribution});
+
+      map = new L.Map('map', {
+        center: new L.LatLng(39.90973623453719, -93.69140625),
+        zoom: 6,
+        layers: [cloudmade, users, newUser]
+      });
+
+      // GeoLocation Control
+      function geoLocate() {
+        map.locate({setView: true, maxZoom: 14});
+      }
+      var geolocControl = new L.control({
+        position: 'topright'
+      });
+      geolocControl.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'leaflet-control-zoom leaflet-control');
+        div.innerHTML = '<a class="leaflet-control-geoloc" href="#" onclick="geoLocate(); return false;" title="My location"></a>';
+        return div;
+      };
+      
+      map.addControl(geolocControl);
+      map.addControl(new L.Control.Scale());
+
+      //map.locate({setView: true, maxZoom: 3});
+
+      $(document).ready(function() {
+        $.ajaxSetup({cache:true});
+        $('#map').css('height', ($(window).height() - 40));
+        getUsers();
+      });
+
+      $(window).resize(function () {
+        $('#map').css('height', ($(window).height() - 40));
+      }).resize();
+
+      function geoLocate() {
+        map.locate({setView: true, maxZoom: 17});
+      }
+
+      function initRegistration() {
+        map.addEventListener('click', onMapClick);
+        $('#map').css('cursor', 'crosshair');
+        return false;
+      }
+
+      function cancelRegistration() {
+        newUser.clearLayers();
+        $('#map').css('cursor', '');
+        map.removeEventListener('click', onMapClick);
+      }
+
+      function getUsers() {
+        $.getJSON("api/all", function (data) {
+          for (var i = 0; i < data.length; i++) {
+            var location = new L.LatLng(data[i].latitude, data[i].longitude);
+            var name = data[i].name;
+            var address = data[i].address;
+            var marker = new L.Marker(location, {
+              title: name
+            });
+            marker.bindPopup("<div style='text-align: center; margin-left: auto; margin-right: auto;'><h1>"+ title +" </h1><br><p>"+ address +"</p></div>", {maxWidth: '400'});
+            users.addLayer(marker);
+          }
+        }).complete(function() {
+          if (firstLoad == true) {
+            map.fitBounds(users.getBounds());
+            firstLoad = false;
+          };
+        });
+      }
+      //not working yet as we're still finalizing the api - ds
+      function insertUser() {
+        $("#loading-mask").show();
+        $("#loading").show();
+        var address = $("#address").val();
+        var name = $("#name").val();
+        var latitude = $("#latitude").val();
+        var longitude = $("#longitude").val();
+        if (name.length == 0) {
+          alert("Name is required!");
+          return false;
+        }
+        if (email.length == 0) {
+          alert("Email is required!");
+          return false;
+        }
+        var dataString = 'name='+ name + '&email=' + email + '&address=' + addr + '&city=' + city + '&latitude=' + latitude + '&longitude=' + longitude;
+        $.ajax({
+          type: "POST",
+          url: "api/add",
+          data: dataString,
+          success: function() {
+            cancelRegistration();
+            users.clearLayers();
+            getUsers();
+            $("#loading-mask").hide();
+            $("#loading").hide();
+            $('#insertSuccessModal').modal('show');
+          }
+        });
+        return false;
+      }
+
+      function onMapClick(e) {
+        var markerLocation = new L.LatLng(e.latlng.lat, e.latlng.lng);
+        var marker = new L.Marker(markerLocation);
+        newUser.clearLayers();
+        newUser.addLayer(marker);
+        var form =  '<form id="inputform" enctype="multipart/form-data" class="well">'+
+              '<label><strong>Name:</strong> <i>marker title</i></label>'+
+              '<input type="text" class="input-medium" placeholder="Required" id="name" name="name" />'+
+              '<label><strong>Email:</strong> <i>never shared</i></label>'+
+              '<input type="text" class="input-medium" placeholder="Required" id="email" name="email" />'+
+              '<label><strong>City:</strong></label>'+
+              '<input type="text" class="input-medium" placeholder="Optional" id="city" name="city" />'+
+              '<label><strong>IPv6:</strong></label>'+
+              '<input type="text" class="input-medium" placeholder="Optional" id="addr" name="addr" value="[ipv6]" />'+
+              '<input style="display: none;" type="text" id="lat" name="lat" value="'+e.latlng.lat.toFixed(6)+'" />'+
+              '<input style="display: none;" type="text" id="lng" name="lng" value="'+e.latlng.lng.toFixed(6)+'" /><br><br>'+
+              '<div class="row-fluid">'+
+                '<div class="span6" style="text-align:center;"><button type="button" class="btn" onclick="cancelRegistration()">Cancel</button></div>'+
+                '<div class="span6" style="text-align:center;"><button type="button" class="btn btn-primary" onclick="insertUser()">Submit</button></div>'+
+              '</div>'+
+              '</form>';
+        marker.bindPopup(form).openPopup();
+      }
+    </script>
+
+  </body>
+</html>
