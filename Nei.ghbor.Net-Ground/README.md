@@ -32,7 +32,24 @@ Use this [Gist](https://gist.github.com/dcunited001/5626815) to Install CCNx & C
 
 #### On Linux - Build From Source
 
-1. Install CCNx Dependencies
+1. Install CJDNS Dependencies
+  - `sudo apt-get install cmake git build-essential`
+1. Install CCNx Dependencies (install the following packages with apt-get)
+  - ant1.8
+  - autoconf
+  - libssl-dev
+  - libexpat-dev
+  - libpcap-dev
+  - libecryptfs0
+  - libxml2-utils
+  - automake
+  - gawk
+  - gcc
+  - g++
+  - git-core
+  - pkg-config
+  - libpcre3-dev
+  - openjdk-6-jre-lib
 1. Download CCNx Source
   - Download latest stable here - [CCNx 0.7.2 Tarball](http://www.ccnx.org/releases/ccnx-0.7.2.tar.gz) - 5/20/13 - [SHA1](http://www.ccnx.org/releases/ccnx-0.7.2.tar.gz.SHA1)
   - Or Download 0.7.2 tag with `git clone git@github.com:ProjectCCNx/ccnx --branch ccnx-0.7.2 ccnx-0.7.2` (then checkout a new local branch, since you will be in a detached HEAD)
