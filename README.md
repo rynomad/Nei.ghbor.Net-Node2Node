@@ -1,8 +1,8 @@
 Node-2-Node
 ===========
 
-http://Nei.ghbor.Net Umbrella repository. Here we collect the various pieces of the Nei.ghbor.Net puzzle in one place.
-for an outline of the motivations and design considerations of the project, see http://nei.ghbor.net/main/why/ and http://nei.ghbor.net/main/how/
+[Nei.ghbor.Net](http://Nei.ghbor.Net) Umbrella repository. Here we collect the various pieces of the Nei.ghbor.Net puzzle in one place.
+for an outline of the motivations and design considerations of the project, see **[Why](http://Nei.ghbor.Net/main/why/)** and **[How](http://nei.ghbor.net/main/how/)**
 
 You Want to Contribute?
 =======================
