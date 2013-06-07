@@ -7,7 +7,7 @@ for an outline of the motivations and design considerations of the project, see 
 You Want to Contribute?
 =======================
 
-#### Here's our [Gameplan](https://www.pivotaltracker.com/s/projects/834121)
+## Here's our [Gameplan](https://www.pivotaltracker.com/s/projects/834121)
 
 Give us a shout and we'll add you to the [pivotal](https://www.pivotaltracker.com/s/projects/834121).
 
