@@ -4,6 +4,13 @@ Node-2-Node
 http://Nei.ghbor.Net Umbrella repository. Here we collect the various pieces of the Nei.ghbor.Net puzzle in one place.
 for an outline of the motivations and design considerations of the project, see http://nei.ghbor.net/main/why/ and http://nei.ghbor.net/main/how/
 
+You Want to Contribute?
+=======================
+
+#### Here's our [Gameplan](https://www.pivotaltracker.com/s/projects/834121)
+
+Give us a shout and we'll add you to the [pivotal](https://www.pivotaltracker.com/s/projects/834121).
+
 Overview
 ========
 
